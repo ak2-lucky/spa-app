@@ -13,7 +13,7 @@
             </tr>
             </thead>
             <tbody>
-                <tr v-for="task in tasks">
+                <tr v-for="task in tasks" :key="task.id">
                     <th scope="row">{{ task.id }}</th>
                     <td>{{ task.title }}</td>
                     <td>{{ task.content }}</td>
@@ -29,7 +29,7 @@
                         </router-link>
                     </td>
                     <td>
-                        <button class="btn btn-danger">Delete</button>
+                        <button class="btn btn-danger" v-on:click="deleteTask(task.id)">Delete</button>
                     </td>
                 </tr>
             </tbody>
@@ -49,6 +49,12 @@
                 axios.get('/api/tasks')
                     .then((res) => {
                         this.tasks = res.data;
+                    });
+            },
+            deleteTask(id) {
+                axios.delete('/api/tasks/' + id)
+                    .then((res) => {
+                        this.getTasks();
                     });
             }
         },
